@@ -21,26 +21,30 @@ You must have the following installed before proceeding. If you are missing any 
     go get -u github.com/bartmika/poller-server
     ```
 
-5. Setup our environment variable.
+5. Setup our environment variable before running our server.
 
     ```
-    # Sensor IDs
     export POLLER_SERVER_SERIAL_READER_SERVER_ADDRESS=127.0.0.1
     export POLLER_SERVER_SERIAL_READER_SERVER_PORT=50052
     export POLLER_SERVER_TSTORAGE_SERVER_ADDRESS=127.0.0.1
     export POLLER_SERVER_TSTORAGE_SERVER_PORT=50051
     ```
 
-6. Run our application.
+## Usage
+Run our application.
 
     ```
     go run main.go serve
     ```
 
-7. If the server successfully starts you should see a message in your **termnal**:
+If the server successfully starts you should see a message in your **termnal**:
 
     ```
     2021/07/10 15:40:36 Synching with local time...
     2021/07/10 15:41:00 Synchronized with local time.
     2021/07/10 15:41:00 Poller is now running.
     ```
+
+## License
+
+This application is licensed under the **BSD** license. See [LICENSE](LICENSE) for more information.
