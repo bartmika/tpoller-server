@@ -1,28 +1,12 @@
 # Poller Server
 
-The purpose of this application is to poll time-series data from our [serialreader-server](https://github.com/bartmika/soilreader-servier) application and save it to the [tstorage-server](https://github.com/bartmika/tstorage-server) application. The interval of time is every one minute.
+The purpose of this application is to poll time-series data from our [serialreader-server](https://github.com/bartmika/serialreader-server) application and save it to the [tstorage-server](https://github.com/bartmika/tstorage-server) application. The interval of time is every one minute.
 
 ## Prerequisites
 
 You must have the following installed before proceeding. If you are missing any one of these then you cannot begin.
 
 * ``Go 1.16.3``
-
-## Installation
-
-1. Get our latest code.
-
-    ```bash
-    go get -u github.com/bartmika/poller-server
-    ```
-
-2. The purpose of this application is to poll time-series data from our [Mikapod Soil Reader](https://github.com/mikaponics/mikapod-soil-reader) application and save it to the [Mikapod Storage](https://github.com/mikaponics/mikapod-storage) application. The interval of time is every one minute.
-
-## Prerequisites
-
-You must have the following installed before proceeding. If you are missing any one of these then you cannot begin.
-
-* ``Go 1.12.7``
 
 ## Installation
 1. Please visit the [sparkfunweathershield-arduino](https://github.com/bartmika/sparkfunweathershield-arduino) repository and setup the external device and connect it to your development machine.
