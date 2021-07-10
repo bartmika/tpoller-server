@@ -43,4 +43,4 @@ If the server successfully starts you should see a message in your **termnal**:
 
 ## License
 
-This application is licensed under the **BSD** license. See [LICENSE](LICENSE) for more information.
+This application is licensed under the **BSD 3-Clause License**. See [LICENSE](LICENSE) for more information.
