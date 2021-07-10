@@ -33,17 +33,13 @@ You must have the following installed before proceeding. If you are missing any 
 ## Usage
 Run our application.
 
-    ```
     go run main.go serve
-    ```
 
 If the server successfully starts you should see a message in your **termnal**:
 
-    ```
     2021/07/10 15:40:36 Synching with local time...
     2021/07/10 15:41:00 Synchronized with local time.
     2021/07/10 15:41:00 Poller is now running.
-    ```
 
 ## License
 
