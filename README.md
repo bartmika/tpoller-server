@@ -13,7 +13,7 @@ You must have the following installed before proceeding. If you are missing any 
 
 2. Please visit the [serialreader-server](https://github.com/bartmika/serialreader-server) repository and setup that application on your device.
 
-3. Please visit the [tstorage-server](https://github.com/mikaponics/mikapod-storage) repository and setup that application on your device.
+3. Please visit the [tstorage-server](https://github.com/bartmika/tstorage-server) repository and setup that application on your device.
 
 4. Get our latest code.
 
@@ -21,7 +21,7 @@ You must have the following installed before proceeding. If you are missing any 
     go get -u github.com/bartmika/poller-server
     ```
 
-5. Setup our environment variable. Please change to the address of our remote server. Please adjust the sensor ID values based what was assugned frin the Mikaponics web service. If the data belongs to a different tenant please adjust the value, else leave as is!
+5. Setup our environment variable.
 
     ```
     # Sensor IDs
