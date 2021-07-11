@@ -1,6 +1,6 @@
 # Poller Server
 
-The purpose of this application is to poll time-series data from our [serialreader-server](https://github.com/bartmika/serialreader-server) application and save it to the [tstorage-server](https://github.com/bartmika/tstorage-server) application. The interval of time is every one minute.
+The purpose of this application is to poll time-series data from our [serialreader-server](https://github.com/bartmika/serialreader-server) application which is connected to the [sparkfunweathershield-arduino](https://github.com/bartmika/sparkfunweathershield-arduino) hardware device and save it to the [tstorage-server](https://github.com/bartmika/tstorage-server) application. The interval of time is every one minute.
 
 ## Prerequisites
 
