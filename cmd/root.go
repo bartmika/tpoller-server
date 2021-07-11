@@ -9,9 +9,9 @@ import (
 
 var (
 	serialReaderAddress string
-	serialReaderPort string
-	tstorageAddress string
-	tstoragePort string
+	serialReaderPort    string
+	tstorageAddress     string
+	tstoragePort        string
 )
 
 // Initialize function will be called when every command gets called.

@@ -2,15 +2,15 @@ package internal
 
 import (
 	// "fmt"
-	"log"
 	"context"
+	"log"
 	"time"
 
 	// "google.golang.org/grpc"
 	"github.com/golang/protobuf/ptypes/timestamp"
 
-	tstorage_pb "github.com/bartmika/tstorage-server/proto"
 	reader_pb "github.com/bartmika/serialreader-server/proto"
+	tstorage_pb "github.com/bartmika/tstorage-server/proto"
 )
 
 // Source: https://www.reddit.com/r/golang/comments/44tmti/scheduling_a_function_call_to_the_exact_start_of/
@@ -32,7 +32,7 @@ func minuteTicker() *time.Timer {
 	return time.NewTimer(diff)
 }
 
-func (s *PollerServer) getDataFromArduino() (*reader_pb.SparkFunWeatherShieldTimeSeriesData){
+func (s *PollerServer) getDataFromArduino() *reader_pb.SparkFunWeatherShieldTimeSeriesData {
 	c := s.readerClient
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -48,7 +48,7 @@ func (s *PollerServer) saveDataToStorage(data *reader_pb.SparkFunWeatherShieldTi
 	// For debugging purposes only.
 	// fmt.Printf("\n%+v\n", data)
 
-    // Open up a streamming service connection with our `tstorage-server` so
+	// Open up a streamming service connection with our `tstorage-server` so
 	// we can send bulk time-series data and gRPC will send the data in streams.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -89,9 +89,9 @@ func (s *PollerServer) addTimeSeriesDatum(
 	value64 := float64(value32)
 
 	tsd := &tstorage_pb.TimeSeriesDatum{
-		Labels: labels,
-		Metric: instrumentId,
-		Value: value64,
+		Labels:    labels,
+		Metric:    instrumentId,
+		Value:     value64,
 		Timestamp: ts,
 	}
 
@@ -102,6 +102,6 @@ func (s *PollerServer) addTimeSeriesDatum(
 	// https://grpc.io/docs/languages/go/basics/#client-side-streaming-rpc-1
 
 	if err := stream.Send(tsd); err != nil {
-        log.Fatalf("could not add time-series data to storage: %v", err)
-    }
+		log.Fatalf("could not add time-series data to storage: %v", err)
+	}
 }
