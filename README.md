@@ -27,7 +27,7 @@ The interval of time is every one minute. For example, if your application imple
 - 2021/07/13 23:20:00
 - ... etc
 
-If you'd like to see how to setup a server, check this project out.
+If you'd like to see how to setup a server, see [tarduinoreader-server](https://github.com/bartmika/tarduinoreader-server).
 
 ## Prerequisites
 
