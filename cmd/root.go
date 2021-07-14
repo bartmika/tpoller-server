@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	serialReaderAddress string
-	serialReaderPort    string
+	readerAddress string
+	readerPort    string
 	tstorageAddress     string
 	tstoragePort        string
 )
@@ -24,14 +24,14 @@ func init() {
 
 	// Make our environment variable globally accessible throughout all the
 	// sub-commands in this project.
-	rootCmd.PersistentFlags().StringVar(&serialReaderAddress, "srAddress", srAddress, "The address of the serial reader server this application will connect to.")
-	rootCmd.PersistentFlags().StringVar(&serialReaderPort, "srPort", srPort, "The port of the serial reader server this application will connect to.")
+	rootCmd.PersistentFlags().StringVar(&readerAddress, "srAddress", srAddress, "The address of the serial reader server this application will connect to.")
+	rootCmd.PersistentFlags().StringVar(&readerPort, "srPort", srPort, "The port of the serial reader server this application will connect to.")
 	rootCmd.PersistentFlags().StringVar(&tstorageAddress, "tsAddress", tsAddress, "The address of the tstorage server this application will connect to.")
 	rootCmd.PersistentFlags().StringVar(&tstoragePort, "tsPort", tsPort, "The port of the tstorage server this application will connect to.")
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "poller-server",
+	Use:   "tpoller-server",
 	Short: "Serve time-series data",
 	Long:  `Serve time-series data from a connected Arduino device with an attached 'SparkFun Weather Shield' device over gRPC.`,
 	Run: func(cmd *cobra.Command, args []string) {

@@ -15,6 +15,6 @@ var versionCmd = &cobra.Command{
 	Short: "Print the version number",
 	Long:  `Print the current version that this server is on.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("poller-server v1.0")
+		fmt.Println("tpoller-server v1.0")
 	},
 }

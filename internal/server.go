@@ -5,34 +5,34 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
-
-	reader_pb "github.com/bartmika/serialreader-server/proto"
 	tstorage_pb "github.com/bartmika/tstorage-server/proto"
+
+	pb "github.com/bartmika/tpoller-server/proto"
 )
 
-type PollerServer struct {
+type TPoller struct {
 	timer  *time.Timer
 	ticker *time.Ticker
 	done   chan bool
 
-	serialReaderFullAddress string
+	readerFullAddress string
 	readerConn              *grpc.ClientConn
-	readerClient            reader_pb.SerialReaderClient
+	readerClient            pb.TPollerClient
 
 	tstorageFullAddress string
 	tstorageConn        *grpc.ClientConn
 	tstorageClient      tstorage_pb.TStorageClient
 }
 
-func NewPollerServer(
-	serialReaderFullAddress string,
+func NewTPoller(
+	readerFullAddress string,
 	tstorageFullAddress string,
-) (*PollerServer, error) {
-	s := &PollerServer{
+) (*TPoller, error) {
+	s := &TPoller{
 		timer:                   nil,
 		ticker:                  nil,
 		done:                    make(chan bool, 1), // Create a execution blocking channel.
-		serialReaderFullAddress: serialReaderFullAddress,
+		readerFullAddress:       readerFullAddress,
 		tstorageFullAddress:     tstorageFullAddress,
 	}
 
@@ -47,6 +47,7 @@ func NewPollerServer(
 	if err != nil {
 		return nil, err
 	}
+	log.Println("tstorage connected")
 
 	// Set up our protocol buffer interface.
 	client := tstorage_pb.NewTStorageClient(conn)
@@ -58,16 +59,17 @@ func NewPollerServer(
 
 	// Set up a direct connection to the gRPC server.
 	conn, err = grpc.Dial(
-		s.serialReaderFullAddress,
+		s.readerFullAddress,
 		grpc.WithInsecure(),
 		grpc.WithBlock(),
 	)
 	if err != nil {
 		return nil, err
 	}
+	log.Println("treader connected")
 
 	// Set up our protocol buffer interface.
-	readerClient := reader_pb.NewSerialReaderClient(conn)
+	readerClient := pb.NewTPollerClient(conn)
 
 	s.readerConn = conn
 	s.readerClient = readerClient
@@ -77,7 +79,7 @@ func NewPollerServer(
 
 // Function will consume the main runtime loop and run the business logic
 // of the application.
-func (s *PollerServer) RunMainRuntimeLoop() {
+func (s *TPoller) RunMainRuntimeLoop() {
 	defer s.shutdown()
 
 	// DEVELOPERS NOTE:
@@ -108,13 +110,15 @@ func (s *PollerServer) RunMainRuntimeLoop() {
 	// (2) Main runtime loop's execution is blocked by the `done` chan which
 	//     can only be triggered when this application gets a termination signal
 	//     from the operating system.
-	log.Printf("Poller is now running.")
+	log.Printf("TimeSeriesDataPoller is now running.")
 	go func() {
 		for {
 			select {
 			case <-s.ticker.C:
-				data := s.getDataFromArduino()
-				s.saveDataToStorage(data)
+				err := s.pollArduinoReader()
+				if err != nil {
+					panic(err)
+				}
 			case <-s.done:
 				s.ticker.Stop()
 				log.Printf("Interrupted ticker.")
@@ -127,11 +131,11 @@ func (s *PollerServer) RunMainRuntimeLoop() {
 
 // Function will tell the application to stop the main runtime loop when
 // the process has been finished.
-func (s *PollerServer) StopMainRuntimeLoop() {
+func (s *TPoller) StopMainRuntimeLoop() {
 	s.done <- true
 }
 
-func (s *PollerServer) shutdown() {
+func (s *TPoller) shutdown() {
 	s.tstorageConn.Close()
 	s.readerConn.Close()
 }

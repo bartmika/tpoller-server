@@ -1,4 +1,4 @@
-package internal // github.com/mikaponics/mikapod-poller/internal
+package internal // github.com/mikaponics/mikapod-tpoller/internal
 
 import (
 	"github.com/golang/protobuf/ptypes/timestamp"

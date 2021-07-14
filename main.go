@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bartmika/poller-server/cmd"
+	"github.com/bartmika/tpoller-server/cmd"
 )
 
 func main() {

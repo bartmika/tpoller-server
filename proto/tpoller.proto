@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/bartmika/tpoller-server";
+
+package proto;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service TPoller {
+    rpc PollTimeSeriesData (google.protobuf.Empty) returns (stream PolledTimeSeriesDatum) {}
+}
+
+message PolledLabel {
+    string name = 1;
+    string value = 2;
+}
+
+message PolledTimeSeriesDatum {
+    string metric = 1;
+    repeated PolledLabel labels = 2;
+    double value = 3;
+    google.protobuf.Timestamp timestamp = 4;
+}

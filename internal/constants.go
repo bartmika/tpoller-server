@@ -1,8 +1,8 @@
 package internal
 
-const PollerServerSparkFunWeatherShieldHumiditySensorId = "1"
-const PollerServerSparkFunWeatherShieldTemperatureSensorId = "2"
-const PollerServerSparkFunWeatherShieldPressureSensorId = "3"
-const PollerServerSparkFunWeatherShieldTemperatureBackupSensorId = "4"
-const PollerServerSparkFunWeatherShieldAltitudeSensorId = "5"
-const PollerServerSparkFunWeatherShieldIlluminanceSensorId = "6"
+const TPollerSparkFunWeatherShieldHumiditySensorId = "1"
+const TPollerSparkFunWeatherShieldTemperatureSensorId = "2"
+const TPollerSparkFunWeatherShieldPressureSensorId = "3"
+const TPollerSparkFunWeatherShieldTemperatureBackupSensorId = "4"
+const TPollerSparkFunWeatherShieldAltitudeSensorId = "5"
+const TPollerSparkFunWeatherShieldIlluminanceSensorId = "6"

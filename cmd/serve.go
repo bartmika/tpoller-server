@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/bartmika/poller-server/internal"
+	"github.com/bartmika/tpoller-server/internal"
 )
 
 func init() {
@@ -18,18 +18,18 @@ func init() {
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Run the poller service",
-	Long:  `Run the poller service in the foregone which will periodically call the "serialreader-server" to retrieve time-series data and save it to our database.`,
+	Short: "Run the tpoller service",
+	Long:  `Run the tpoller service in the foregone which will periodically call the "serialreader-server" to retrieve time-series data and save it to our database.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		doRun()
 	},
 }
 
 func doRun() {
-	serialReaderFullAddress := fmt.Sprintf("%v:%v", serialReaderAddress, serialReaderPort)
+	readerFullAddress := fmt.Sprintf("%v:%v", readerAddress, readerPort)
 	tstorageFullAddress := fmt.Sprintf("%v:%v", tstorageAddress, tstoragePort)
 
-	app, err := internal.NewPollerServer(serialReaderFullAddress, tstorageFullAddress)
+	app, err := internal.NewTPoller(readerFullAddress, tstorageFullAddress)
 	if err != nil {
 		log.Fatal(err)
 	}
