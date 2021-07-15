@@ -4,9 +4,9 @@ import (
     tstorage_pb "github.com/bartmika/tstorage-server/proto"
 )
 
-// Function will convert the data structure from `PolledLabel` to `Label`
+// Function will convert the data structure from `TelemetryLabel` to `Label`
 // so that `tstorage-server` can accept the values.
-func ToLabels(polledLabels []*PolledLabel) []*tstorage_pb.Label {
+func ToLabels(polledLabels []*TelemetryLabel) []*tstorage_pb.Label {
     labels := make([]*tstorage_pb.Label, len(polledLabels))
     for _, v := range polledLabels {
         label := &tstorage_pb.Label{
@@ -20,7 +20,7 @@ func ToLabels(polledLabels []*PolledLabel) []*tstorage_pb.Label {
 
 // Function will convert the data structure so that `tstorage-server` can
 // accept the time-series data.
-func ToTimeSeriesDatum(d *PolledTimeSeriesDatum) *tstorage_pb.TimeSeriesDatum {
+func ToTimeSeriesDatum(d *TelemetryDatum) *tstorage_pb.TimeSeriesDatum {
     return &tstorage_pb.TimeSeriesDatum{
 		Labels:    ToLabels(d.Labels),
 		Metric:    d.Metric,

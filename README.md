@@ -3,18 +3,18 @@
 The purpose of this application is to poll time-series data per time interval from any (telemetry) application running a gRPC server which implements the [the following gRPC service definition](/proto/tpoller.proto):
 
 ```proto
-service TPoller {
-    rpc PollTimeSeriesData (google.protobuf.Empty) returns (stream PolledTimeSeriesDatum) {}
+service Telemetry {
+    rpc PollTelemeter (google.protobuf.Empty) returns (stream TelemetryDatum) {}
 }
 
-message PolledLabel {
+message TelemetryLabel {
     string name = 1;
     string value = 2;
 }
 
-message PolledTimeSeriesDatum {
+message TelemetryDatum {
     string metric = 1;
-    repeated PolledLabel labels = 2;
+    repeated TelemetryLabel labels = 2;
     double value = 3;
     google.protobuf.Timestamp timestamp = 4;
 }
@@ -66,16 +66,13 @@ Run the gRPC server to allow other services to access the storage application
 
 #### Fields
 
-* `-a` or `--tstorage_addr` is for the port for this server to run on. Default value is 50051 if you don't use this option.
-* `-b` or `--tstorage_port` is for the port for this server to run on. Default value is 50051 if you don't use this option.
-* `-c` or `--datareader_addr` is for the location path to use to save the database files to. Default value is './tsdb'.
-* `-d` or `--datareader_port` is for the location path to use to save the database files to. Default value is './tsdb'.
-
+* `-i` or `--telemetry_addr` is for the IP address and port for the telemetry application which implemented the `Telemetry` gRPC service definition..
+* `-o` or `--storage_addr` is for the IP address and port for the server which does fast time-series data storage which implemented the `TStorage` gRPC service definition.
 
 #### Example:
 
 ```bash
-$GOBIN/tpoller-server serve -a=127.0.0.1 -b=50051 -c=127.0.0.1 -d=50052
+$GOBIN/tpoller-server serve -i="localhost:50054" -o="localhost=50053"
 ```
 
 #### Output:

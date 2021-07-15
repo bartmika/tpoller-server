@@ -35,14 +35,14 @@ func minuteTicker() *time.Timer {
 }
 
 func (s *TPoller) pollArduinoReader() error {
-	c := s.readerClient
+	c := s.telemeterClient
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
 	// Open up a streaming service connection with our application that implemented
 	// our gRPC definition.
-	pollStream, err := c.PollTimeSeriesData(ctx, &empty.Empty{})
+	telemetryStream, err := c.PollTelemeter(ctx, &empty.Empty{})
 	if err != nil {
 		log.Fatalf("could not select: %v", err)
 	}
@@ -54,21 +54,21 @@ func (s *TPoller) pollArduinoReader() error {
 		log.Fatalf("%v.InsertRows(_) = _, %v", s.tstorageClient, err)
 	}
 
-	// Handle our pollStream of data from the server.
+	// Handle our telemetryStream of data from the server.
 	for {
-		polledTimeSeriesData, err := pollStream.Recv()
+		telemetryDatum, err := telemetryStream.Recv()
 		if err == io.EOF {
 			break
 		}
 		if err != nil {
-			log.Fatalf("error with pollStream: %v", err)
+			log.Fatalf("error with telemetryStream: %v", err)
 		}
 
 		// Print out the gRPC response.
-		log.Printf("Server Response: %s", polledTimeSeriesData)
+		log.Printf("Server Response: %s", telemetryDatum)
 
 		// Convert from our `polled` format to the storage format.
-		timeSeriesDatum := pb.ToTimeSeriesDatum(polledTimeSeriesData)
+		timeSeriesDatum := pb.ToTimeSeriesDatum(telemetryDatum)
 
 		// DEVELOPERS NOTE:
 		// To stream from a client to a server using gRPC, the following documentation

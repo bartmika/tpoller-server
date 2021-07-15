@@ -15,9 +15,9 @@ type TPoller struct {
 	ticker *time.Ticker
 	done   chan bool
 
-	readerFullAddress string
-	readerConn              *grpc.ClientConn
-	readerClient            pb.TPollerClient
+	telemeterFullAddress string
+	telemeterConn              *grpc.ClientConn
+	telemeterClient            pb.TelemetryClient
 
 	tstorageFullAddress string
 	tstorageConn        *grpc.ClientConn
@@ -25,14 +25,14 @@ type TPoller struct {
 }
 
 func NewTPoller(
-	readerFullAddress string,
+	telemeterFullAddress string,
 	tstorageFullAddress string,
 ) (*TPoller, error) {
 	s := &TPoller{
 		timer:                   nil,
 		ticker:                  nil,
 		done:                    make(chan bool, 1), // Create a execution blocking channel.
-		readerFullAddress:       readerFullAddress,
+		telemeterFullAddress:       telemeterFullAddress,
 		tstorageFullAddress:     tstorageFullAddress,
 	}
 
@@ -55,24 +55,24 @@ func NewTPoller(
 	s.tstorageConn = conn
 	s.tstorageClient = client
 
-	// STEP 2: Connect to our serial reader.
+	// STEP 2: Connect to our serial telemeter.
 
 	// Set up a direct connection to the gRPC server.
 	conn, err = grpc.Dial(
-		s.readerFullAddress,
+		s.telemeterFullAddress,
 		grpc.WithInsecure(),
 		grpc.WithBlock(),
 	)
 	if err != nil {
 		return nil, err
 	}
-	log.Println("treader connected")
+	log.Println("telemeter connected")
 
 	// Set up our protocol buffer interface.
-	readerClient := pb.NewTPollerClient(conn)
+	telemeterClient := pb.NewTelemetryClient(conn)
 
-	s.readerConn = conn
-	s.readerClient = readerClient
+	s.telemeterConn = conn
+	s.telemeterClient = telemeterClient
 
 	return s, nil
 }
@@ -137,5 +137,5 @@ func (s *TPoller) StopMainRuntimeLoop() {
 
 func (s *TPoller) shutdown() {
 	s.tstorageConn.Close()
-	s.readerConn.Close()
+	s.telemeterConn.Close()
 }

@@ -12,7 +12,19 @@ import (
 	"github.com/bartmika/tpoller-server/internal"
 )
 
+var (
+	telemetryAddr            string
+	storageAddr              string
+)
+
 func init() {
+	// The following are required.
+	serveCmd.Flags().StringVarP(&telemetryAddr, "telemetry_addr", "i", "localhost:50052", "The telemetry gRPC server address.")
+	serveCmd.MarkFlagRequired("telemetry_addr")
+	serveCmd.Flags().StringVarP(&storageAddr, "storage_addr", "o", "localhost:50051", "The time-series data storage gRPC server address.")
+	serveCmd.MarkFlagRequired("storage_addr")
+
+	// Attach our sub-command to our application
 	rootCmd.AddCommand(serveCmd)
 }
 
@@ -26,10 +38,7 @@ var serveCmd = &cobra.Command{
 }
 
 func doRun() {
-	readerFullAddress := fmt.Sprintf("%v:%v", readerAddress, readerPort)
-	tstorageFullAddress := fmt.Sprintf("%v:%v", tstorageAddress, tstoragePort)
-
-	app, err := internal.NewTPoller(readerFullAddress, tstorageFullAddress)
+	app, err := internal.NewTPoller(telemetryAddr, storageAddr)
 	if err != nil {
 		log.Fatal(err)
 	}
