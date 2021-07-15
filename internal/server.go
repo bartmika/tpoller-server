@@ -47,7 +47,7 @@ func NewTPoller(
 	if err != nil {
 		return nil, err
 	}
-	log.Println("tstorage connected")
+	log.Println("Storage connected")
 
 	// Set up our protocol buffer interface.
 	client := tstorage_pb.NewTStorageClient(conn)
@@ -66,7 +66,7 @@ func NewTPoller(
 	if err != nil {
 		return nil, err
 	}
-	log.Println("telemeter connected")
+	log.Println("Telemeter connected")
 
 	// Set up our protocol buffer interface.
 	telemetryClient := pb.NewTelemetryClient(conn)
@@ -110,7 +110,7 @@ func (s *TPoller) RunMainRuntimeLoop() {
 	// (2) Main runtime loop's execution is blocked by the `done` chan which
 	//     can only be triggered when this application gets a termination signal
 	//     from the operating system.
-	log.Printf("TimeSeriesDataPoller is now running.")
+	log.Printf("TPoller is now running.")
 	go func() {
 		for {
 			select {

@@ -35,7 +35,7 @@ func minuteTicker() *time.Timer {
 }
 
 func (s *TPoller) pollArduinoReader() error {
-	c := s.telemeterClient
+	c := s.telemetryClient
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()

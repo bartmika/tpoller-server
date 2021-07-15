@@ -39,7 +39,7 @@ You must have the following installed before proceeding. If you are missing any 
 Get our latest code.
 
 ```bash
-go get -u github.com/bartmika/tpoller-server
+go get -u github.com/bartmika/tpoller-server --telemetry_addr="127.0.0.1:50051" --storage_addr="127.0.0.1:50052"
 ```
 
 ## Usage
@@ -66,8 +66,8 @@ Run the gRPC server to allow other services to access the storage application
 
 #### Fields
 
-* `-i` or `--telemetry_addr` is for the IP address and port for the telemetry application which implemented the `Telemetry` gRPC service definition..
-* `-o` or `--storage_addr` is for the IP address and port for the server which does fast time-series data storage which implemented the `TStorage` gRPC service definition.
+* `-i` or `--telemetry_addr` is for the IP address and port for the telemetry application which implemented the [`Telemetry`](/proto/tpoller.proto) gRPC service definition..
+* `-o` or `--storage_addr` is for the IP address and port for the server which does fast time-series data storage which implemented the [`TStorage`](https://github.com/bartmika/tstorage-server/blob/master/proto/tstorage.proto) gRPC service definition.
 
 #### Example:
 
@@ -78,9 +78,17 @@ $GOBIN/tpoller-server serve -i="127.0.0.1:50052" -o="127.0.0.1:50053"
 #### Output:
 
 ```bash
-2021/07/10 15:40:36 Synching with local time...
-2021/07/10 15:41:00 Synchronized with local time.
-2021/07/10 15:41:00 TPoller is now running.
+2021/07/15 00:51:00 Storage connected
+2021/07/15 00:51:00 Telemeter connected
+2021/07/15 00:51:00 Synching with local time...
+2021/07/15 00:52:00 Synchronized with local time.
+2021/07/15 00:52:00 TPoller is now running.
+2021/07/15 00:53:00 Server Response: metric:"humidity"  labels:{name:"unit"  value:"%"}  value:59.63568115234375  timestamp:{seconds:1626324780}
+2021/07/15 00:53:00 Server Response: metric:"temperature"  labels:{name:"unit"  value:"F"}  value:71.82158660888672  timestamp:{seconds:1626324780}
+2021/07/15 00:53:00 Server Response: metric:"pressure"  labels:{name:"unit"  value:"Pa"}  value:98586.25  timestamp:{seconds:1626324780}
+2021/07/15 00:53:00 Server Response: metric:"temperature_backup"  labels:{name:"unit"  value:"F"}  value:69.80000305175781  timestamp:{seconds:1626324780}
+2021/07/15 00:53:00 Server Response: metric:"altitude"  labels:{name:"unit"  value:"ft"}  value:80861.6328125  timestamp:{seconds:1626324780}
+2021/07/15 00:53:00 Server Response: metric:"illuminance"  labels:{name:"unit"  value:"V"}  value:0.05434099957346916  timestamp:{seconds:1626324780}
 ```
 
 ### ``version``
