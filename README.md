@@ -39,19 +39,25 @@ You must have the following installed before proceeding. If you are missing any 
 Get our latest code.
 
 ```bash
-go get -u github.com/bartmika/tpoller-server --telemetry_addr="127.0.0.1:50051" --storage_addr="127.0.0.1:50052"
+go get -u github.com/bartmika/tpoller-server
 ```
 
 ## Usage
 Run our application.
 
-    go run main.go serve
+```bash
+go run main.go serve --telemetry_addr="127.0.0.1:50051" --storage_addr="127.0.0.1:50052"
+```
 
 If the server successfully starts you should see a message in your **termnal**:
 
-    2021/07/10 15:40:36 Synching with local time...
-    2021/07/10 15:41:00 Synchronized with local time.
-    2021/07/10 15:41:00 TPoller is now running.
+```bash
+2021/07/15 00:51:00 Storage connected
+2021/07/15 00:51:00 Telemeter connected
+2021/07/15 00:51:00 Synching with local time...
+2021/07/15 00:52:00 Synchronized with local time.
+2021/07/15 00:52:00 TPoller is now running.
+```
 
 ## Used by:
 This server is confirmed to successfully poll from the following application(s):
