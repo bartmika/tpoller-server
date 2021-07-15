@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"google.golang.org/grpc"
 	tstorage_pb "github.com/bartmika/tstorage-server/proto"
+	"google.golang.org/grpc"
 
 	pb "github.com/bartmika/tpoller-server/proto"
 )
@@ -15,32 +15,32 @@ type TPoller struct {
 	ticker *time.Ticker
 	done   chan bool
 
-	telemeterFullAddress string
-	telemeterConn              *grpc.ClientConn
-	telemeterClient            pb.TelemetryClient
+	telemetryAddr   string
+	telemetryConn   *grpc.ClientConn
+	telemetryClient pb.TelemetryClient
 
-	tstorageFullAddress string
-	tstorageConn        *grpc.ClientConn
-	tstorageClient      tstorage_pb.TStorageClient
+	storageAddr    string
+	tstorageConn   *grpc.ClientConn
+	tstorageClient tstorage_pb.TStorageClient
 }
 
 func NewTPoller(
-	telemeterFullAddress string,
-	tstorageFullAddress string,
+	telemetryAddr string,
+	storageAddr string,
 ) (*TPoller, error) {
 	s := &TPoller{
-		timer:                   nil,
-		ticker:                  nil,
-		done:                    make(chan bool, 1), // Create a execution blocking channel.
-		telemeterFullAddress:       telemeterFullAddress,
-		tstorageFullAddress:     tstorageFullAddress,
+		timer:         nil,
+		ticker:        nil,
+		done:          make(chan bool, 1), // Create a execution blocking channel.
+		telemetryAddr: telemetryAddr,
+		storageAddr:   storageAddr,
 	}
 
 	// STEP 1: Connect to our time-series data storage.
 
 	// Set up a direct connection to the gRPC server.
 	conn, err := grpc.Dial(
-		s.tstorageFullAddress,
+		s.storageAddr,
 		grpc.WithInsecure(),
 		grpc.WithBlock(),
 	)
@@ -59,7 +59,7 @@ func NewTPoller(
 
 	// Set up a direct connection to the gRPC server.
 	conn, err = grpc.Dial(
-		s.telemeterFullAddress,
+		s.telemetryAddr,
 		grpc.WithInsecure(),
 		grpc.WithBlock(),
 	)
@@ -69,10 +69,10 @@ func NewTPoller(
 	log.Println("telemeter connected")
 
 	// Set up our protocol buffer interface.
-	telemeterClient := pb.NewTelemetryClient(conn)
+	telemetryClient := pb.NewTelemetryClient(conn)
 
-	s.telemeterConn = conn
-	s.telemeterClient = telemeterClient
+	s.telemetryConn = conn
+	s.telemetryClient = telemetryClient
 
 	return s, nil
 }
@@ -137,5 +137,5 @@ func (s *TPoller) StopMainRuntimeLoop() {
 
 func (s *TPoller) shutdown() {
 	s.tstorageConn.Close()
-	s.telemeterConn.Close()
+	s.telemetryConn.Close()
 }

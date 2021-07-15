@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	telemetryAddr            string
-	storageAddr              string
+	telemetryAddr string
+	storageAddr   string
 )
 
 func init() {

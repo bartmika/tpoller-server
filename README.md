@@ -72,7 +72,7 @@ Run the gRPC server to allow other services to access the storage application
 #### Example:
 
 ```bash
-$GOBIN/tpoller-server serve -i="localhost:50054" -o="localhost=50053"
+$GOBIN/tpoller-server serve -i="127.0.0.1:50052" -o="127.0.0.1:50053"
 ```
 
 #### Output:

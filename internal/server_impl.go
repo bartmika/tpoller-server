@@ -3,9 +3,9 @@ package internal
 import (
 	// "fmt"
 	"context"
+	"io"
 	"log"
 	"time"
-	"io"
 
 	// "google.golang.org/grpc"
 	"github.com/golang/protobuf/ptypes/empty"
