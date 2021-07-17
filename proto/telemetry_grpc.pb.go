@@ -19,7 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TelemetryClient interface {
-	PollTelemeter(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (Telemetry_PollTelemeterClient, error)
+	GetTimeSeriesData(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (Telemetry_GetTimeSeriesDataClient, error)
 }
 
 type telemetryClient struct {
@@ -30,12 +30,12 @@ func NewTelemetryClient(cc grpc.ClientConnInterface) TelemetryClient {
 	return &telemetryClient{cc}
 }
 
-func (c *telemetryClient) PollTelemeter(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (Telemetry_PollTelemeterClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Telemetry_ServiceDesc.Streams[0], "/proto.Telemetry/PollTelemeter", opts...)
+func (c *telemetryClient) GetTimeSeriesData(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (Telemetry_GetTimeSeriesDataClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Telemetry_ServiceDesc.Streams[0], "/proto.Telemetry/GetTimeSeriesData", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &telemetryPollTelemeterClient{stream}
+	x := &telemetryGetTimeSeriesDataClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -45,16 +45,16 @@ func (c *telemetryClient) PollTelemeter(ctx context.Context, in *empty.Empty, op
 	return x, nil
 }
 
-type Telemetry_PollTelemeterClient interface {
+type Telemetry_GetTimeSeriesDataClient interface {
 	Recv() (*TelemetryDatum, error)
 	grpc.ClientStream
 }
 
-type telemetryPollTelemeterClient struct {
+type telemetryGetTimeSeriesDataClient struct {
 	grpc.ClientStream
 }
 
-func (x *telemetryPollTelemeterClient) Recv() (*TelemetryDatum, error) {
+func (x *telemetryGetTimeSeriesDataClient) Recv() (*TelemetryDatum, error) {
 	m := new(TelemetryDatum)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func (x *telemetryPollTelemeterClient) Recv() (*TelemetryDatum, error) {
 // All implementations must embed UnimplementedTelemetryServer
 // for forward compatibility
 type TelemetryServer interface {
-	PollTelemeter(*empty.Empty, Telemetry_PollTelemeterServer) error
+	GetTimeSeriesData(*empty.Empty, Telemetry_GetTimeSeriesDataServer) error
 	mustEmbedUnimplementedTelemetryServer()
 }
 
@@ -74,8 +74,8 @@ type TelemetryServer interface {
 type UnimplementedTelemetryServer struct {
 }
 
-func (UnimplementedTelemetryServer) PollTelemeter(*empty.Empty, Telemetry_PollTelemeterServer) error {
-	return status.Errorf(codes.Unimplemented, "method PollTelemeter not implemented")
+func (UnimplementedTelemetryServer) GetTimeSeriesData(*empty.Empty, Telemetry_GetTimeSeriesDataServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetTimeSeriesData not implemented")
 }
 func (UnimplementedTelemetryServer) mustEmbedUnimplementedTelemetryServer() {}
 
@@ -90,24 +90,24 @@ func RegisterTelemetryServer(s grpc.ServiceRegistrar, srv TelemetryServer) {
 	s.RegisterService(&Telemetry_ServiceDesc, srv)
 }
 
-func _Telemetry_PollTelemeter_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _Telemetry_GetTimeSeriesData_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(empty.Empty)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(TelemetryServer).PollTelemeter(m, &telemetryPollTelemeterServer{stream})
+	return srv.(TelemetryServer).GetTimeSeriesData(m, &telemetryGetTimeSeriesDataServer{stream})
 }
 
-type Telemetry_PollTelemeterServer interface {
+type Telemetry_GetTimeSeriesDataServer interface {
 	Send(*TelemetryDatum) error
 	grpc.ServerStream
 }
 
-type telemetryPollTelemeterServer struct {
+type telemetryGetTimeSeriesDataServer struct {
 	grpc.ServerStream
 }
 
-func (x *telemetryPollTelemeterServer) Send(m *TelemetryDatum) error {
+func (x *telemetryGetTimeSeriesDataServer) Send(m *TelemetryDatum) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -120,8 +120,8 @@ var Telemetry_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "PollTelemeter",
-			Handler:       _Telemetry_PollTelemeter_Handler,
+			StreamName:    "GetTimeSeriesData",
+			Handler:       _Telemetry_GetTimeSeriesData_Handler,
 			ServerStreams: true,
 		},
 	},

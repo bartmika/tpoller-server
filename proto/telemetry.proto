@@ -8,7 +8,7 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 service Telemetry {
-    rpc PollTelemeter (google.protobuf.Empty) returns (stream TelemetryDatum) {}
+    rpc GetTimeSeriesData (google.protobuf.Empty) returns (stream TelemetryDatum) {}
 }
 
 message TelemetryLabel {

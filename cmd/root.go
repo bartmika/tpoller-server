@@ -12,8 +12,8 @@ func init() {}
 
 var rootCmd = &cobra.Command{
 	Use:   "tpoller-server",
-	Short: "Serve time-series data",
-	Long:  `Serve time-series data from a connected Arduino device with an attached 'SparkFun Weather Shield' device over gRPC.`,
+	Short: "Poll time-series data and save to storage",
+	Long:  `Connect to a 'tstorage-server' and a 'data reader' to poll time-series data and save it to the storage server.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do nothing...
 	},

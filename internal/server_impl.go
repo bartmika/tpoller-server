@@ -42,7 +42,7 @@ func (s *TPoller) pollArduinoReader() error {
 
 	// Open up a streaming service connection with our application that implemented
 	// our gRPC definition.
-	telemetryStream, err := c.PollTelemeter(ctx, &empty.Empty{})
+	telemetryStream, err := c.GetTimeSeriesData(ctx, &empty.Empty{})
 	if err != nil {
 		log.Fatalf("could not select: %v", err)
 	}

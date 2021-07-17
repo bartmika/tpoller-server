@@ -19,7 +19,7 @@ var (
 
 func init() {
 	// The following are required.
-	serveCmd.Flags().StringVarP(&telemetryAddr, "telemetry_addr", "i", "localhost:50052", "The telemetry gRPC server address.")
+	serveCmd.Flags().StringVarP(&telemetryAddr, "telemetry_addr", "i", "localhost:50052", "The telemetry gRPC server address with the 'data reader'.")
 	serveCmd.MarkFlagRequired("telemetry_addr")
 	serveCmd.Flags().StringVarP(&storageAddr, "storage_addr", "o", "localhost:50051", "The time-series data storage gRPC server address.")
 	serveCmd.MarkFlagRequired("storage_addr")
@@ -31,7 +31,7 @@ func init() {
 var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Run the tpoller service",
-	Long:  `Run the tpoller service in the foregone which will periodically call the "serialreader-server" to retrieve time-series data and save it to our database.`,
+	Long:  `Run the tpoller service in the foreground which will periodically call the "data reader" to retrieve time-series data and save it to "tstorage" server.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		doRun()
 	},
