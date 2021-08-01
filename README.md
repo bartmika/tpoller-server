@@ -116,4 +116,4 @@ Found a bug? Need Help? Please create an [issue](https://github.com/bartmika/tpo
 
 ## License
 
-This application is licensed under the **BSD 3-Clause License**. See [LICENSE](LICENSE) for more information.
+This application is licensed under the **ISC License**. See [LICENSE](LICENSE) for more information.
